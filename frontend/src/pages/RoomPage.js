@@ -1,23 +1,22 @@
 import React, { useState, useEffect } from 'react';
 import '../styles/RoomPage.css';
 
-function RoomPage({ roomId, onGoHome }) {
+function RoomPage({ roomId, roomName, onGoHome }) {
   const [story, setStory] = useState('');
   const [newText, setNewText] = useState('');
-  const [roomName, setRoomName] = useState('새로운 릴레이 소설');
   const [copied, setCopied] = useState(false);
 
   useEffect(() => {
     // 실제로는 백엔드에서 방 정보와 이야기 불러오기
-    console.log(`Room ${roomId} loaded`);
-  }, [roomId]);
+    console.log(`Room ${roomId} (${roomName}) loaded`);
+  }, [roomId, roomName]);
 
   const handleAddText = () => {
     if (!newText.trim()) {
       alert('내용을 입력해주세요!');
       return;
     }
-    setStory(story + '\n' + newText);
+    setStory(story + (story ? '\n\n' : '') + newText);
     setNewText('');
   };
 
