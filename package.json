@@ -1,0 +1,12 @@
+{
+  "name": "relay-novel",
+  "version": "1.0.0",
+  "description": "릴레이 소설을 함께 쓸 수 있는 협업 웹사이트",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": ["relay", "novel", "collaborative", "writing"],
+  "author": "",
+  "license": "MIT"
+}
