@@ -3,8 +3,7 @@ import '../styles/HomePage.css';
 
 function HomePage({ onCreateRoom, onJoinRoom }) {
   const [roomName, setRoomName] = useState('');
-  const [roomId, setRoomId] = useState('');
-  const [mode, setMode] = useState(null); // 'create' or 'join'
+  const [mode, setMode] = useState(null); // 'create', 'join', null
 
   // 주제 추천 리스트
   const prompts = [
@@ -34,17 +33,16 @@ function HomePage({ onCreateRoom, onJoinRoom }) {
       return;
     }
     const newRoomId = generateRoomId();
-    // 실제로는 백엔드에 저장하고 받아오기
-    onCreateRoom(newRoomId);
+    onCreateRoom(newRoomId, roomName); // 방 이름도 함께 전달
   };
 
   const handleJoinRoom = () => {
-    if (!roomId.trim()) {
-      alert('방 ID를 입력해주세요!');
+    if (!roomName.trim()) {
+      alert('방 이름을 입력해주세요!');
       return;
     }
-    // 실제로는 백엔드에서 방 존재 확인 후
-    onJoinRoom(roomId);
+    // 실제로는 백엔드에서 방 존재 확인 후 입장
+    onJoinRoom(roomName);
   };
 
   return (
@@ -57,13 +55,19 @@ function HomePage({ onCreateRoom, onJoinRoom }) {
           <div className="mode-selection">
             <button 
               className="mode-btn create-btn"
-              onClick={() => setMode('create')}
+              onClick={() => {
+                setMode('create');
+                setRoomName('');
+              }}
             >
               ✨ 새 방 만들기
             </button>
             <button 
               className="mode-btn join-btn"
-              onClick={() => setMode('join')}
+              onClick={() => {
+                setMode('join');
+                setRoomName('');
+              }}
             >
               🔗 방 참여하기
             </button>
@@ -83,7 +87,7 @@ function HomePage({ onCreateRoom, onJoinRoom }) {
             <button className="prompt-btn" onClick={() => setRoomName(getRandomPrompt())}>
               🎲 주제 추천받기
             </button>
-            {roomName && <p className="selected-prompt">\"{ roomName}\"</p>}
+            {roomName && <p className="selected-prompt">\"{roomName}\"</p>}
             <button className="submit-btn" onClick={handleCreateRoom}>
               방 만들기
             </button>
@@ -98,9 +102,9 @@ function HomePage({ onCreateRoom, onJoinRoom }) {
             <h2>기존 릴레이 방 참여하기</h2>
             <input
               type="text"
-              placeholder="방 ID를 입력하세요 (예: ROOM-ABC12XYZ)"
-              value={roomId}
-              onChange={(e) => setRoomId(e.target.value.toUpperCase())}
+              placeholder="방 이름을 입력하세요 (예: 판타지 모험)"
+              value={roomName}
+              onChange={(e) => setRoomName(e.target.value)}
               className="input-field"
             />
             <button className="submit-btn" onClick={handleJoinRoom}>
